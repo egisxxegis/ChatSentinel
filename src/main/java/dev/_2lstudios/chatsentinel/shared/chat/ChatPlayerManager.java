@@ -11,6 +11,7 @@ import net.md_5.bungee.api.connection.ProxiedPlayer;
 
 public class ChatPlayerManager {
     private Map<UUID, ChatPlayer> chatPlayers = new HashMap<>();
+    public boolean isPaused = false;
 
     public ChatPlayer getPlayerOrCreate(ProxiedPlayer player) {
         ChatPlayer chatPlayer = getPlayerOrCreate(player.getUniqueId());

@@ -35,7 +35,9 @@ public class AsyncPlayerChatListener implements Listener {
 		this.chatPlayerManager = chatPlayerManager;
 	}
 
-	private void processModule(Server server, Player player, ChatPlayer chatPlayer, MessagesModule messagesModule, Module module, AsyncPlayerChatEvent event, String playerName, String message, String originalMessage, String lang) {
+	private void processModule(Server server, Player player, ChatPlayer chatPlayer, MessagesModule messagesModule,
+			Module module, AsyncPlayerChatEvent event, String playerName, String message, String originalMessage,
+			String lang) {
 		if (!player.hasPermission("chatsentinel.bypass." + module.getName())
 				&& module.meetsCondition(chatPlayer, message)) {
 			Collection<Player> recipients = event.getRecipients();
@@ -53,8 +55,7 @@ public class AsyncPlayerChatListener implements Listener {
 					event.setMessage(blacklistModule.getPattern().matcher(event.getMessage()).replaceAll("***"));
 				} else if (!blacklistModule.isBlockRawMessage()) {
 					;
-				}
-				else {
+				} else {
 					event.setCancelled(true);
 				}
 			} else if (module instanceof CapsModule) {
@@ -118,6 +119,9 @@ public class AsyncPlayerChatListener implements Listener {
 	@EventHandler(priority = EventPriority.LOW, ignoreCancelled = true)
 	public void onAsyncPlayerChat(AsyncPlayerChatEvent event) {
 		Player player = event.getPlayer();
+		if (chatPlayerManager.isPaused) {
+			return;
+		}
 
 		if (!player.hasPermission("chatsentinel.bypass")) {
 			ChatPlayer chatPlayer = chatPlayerManager.getPlayerOrCreate(player);
@@ -147,15 +151,21 @@ public class AsyncPlayerChatListener implements Listener {
 
 			message = message.trim();
 
-			processModule(server, player, chatPlayer, messagesModule, moduleManager.getCapsModule(), event, playerName, message, originalMessage, lang);
-			processModule(server, player, chatPlayer, messagesModule, moduleManager.getCooldownModule(), event, playerName, message, originalMessage, lang);
-			processModule(server, player, chatPlayer, messagesModule, moduleManager.getFloodModule(), event, playerName, message, originalMessage, lang);
-			processModule(server, player, chatPlayer, messagesModule, moduleManager.getBlacklistModule(), event, playerName, message, originalMessage, lang);
-			processModule(server, player, chatPlayer, messagesModule, moduleManager.getSyntaxModule(), event, playerName, message, originalMessage, lang);
+			processModule(server, player, chatPlayer, messagesModule, moduleManager.getCapsModule(), event, playerName,
+					message, originalMessage, lang);
+			processModule(server, player, chatPlayer, messagesModule, moduleManager.getCooldownModule(), event,
+					playerName, message, originalMessage, lang);
+			processModule(server, player, chatPlayer, messagesModule, moduleManager.getFloodModule(), event, playerName,
+					message, originalMessage, lang);
+			processModule(server, player, chatPlayer, messagesModule, moduleManager.getBlacklistModule(), event,
+					playerName, message, originalMessage, lang);
+			processModule(server, player, chatPlayer, messagesModule, moduleManager.getSyntaxModule(), event,
+					playerName, message, originalMessage, lang);
 
 			if (!event.isCancelled()) {
-				String newMessage = generalModule.isFilterOther() ? generalModule.sanitize(event.getMessage()) : event.getMessage();
-				
+				String newMessage = generalModule.isFilterOther() ? generalModule.sanitize(event.getMessage())
+						: event.getMessage();
+
 				if (!newMessage.isEmpty()) {
 					long currentMillis = System.currentTimeMillis();
 

@@ -115,6 +115,9 @@ public class ServerCommandListener implements Listener {
 	@EventHandler(priority = EventPriority.LOW, ignoreCancelled = true)
 	public void onServerCommand(PlayerCommandPreprocessEvent event) {
 		Player player = event.getPlayer();
+		if (chatPlayerManager.isPaused) {
+			return;
+		}
 
 		if (!player.hasPermission("chatsentinel.bypass")) {
 			Server server = plugin.getServer();
