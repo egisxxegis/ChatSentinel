@@ -36,7 +36,7 @@ public class ChatSentinelCommand implements CommandExecutor {
 		if (sender.hasPermission("chatsentinel.admin")) {
 			if (args.length == 0 || args[0].equalsIgnoreCase("help")) {
 				sender.sendMessage(messagesModule.getHelp(lang));
-				sender.sendMessage("pause or unpause chatsentinel: &c/chatsentinel pause");
+				sender.sendMessage("§e/chatsentinel pause §7- §bToggles pause on ChatSentinel");
 			} else if (args[0].equalsIgnoreCase("reload")) {
 				moduleManager.reloadData();
 
