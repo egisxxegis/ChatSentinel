@@ -119,9 +119,6 @@ public class AsyncPlayerChatListener implements Listener {
 	@EventHandler(priority = EventPriority.LOW, ignoreCancelled = true)
 	public void onAsyncPlayerChat(AsyncPlayerChatEvent event) {
 		Player player = event.getPlayer();
-		if (chatPlayerManager.isPaused) {
-			return;
-		}
 
 		if (!player.hasPermission("chatsentinel.bypass")) {
 			ChatPlayer chatPlayer = chatPlayerManager.getPlayerOrCreate(player);
@@ -157,8 +154,10 @@ public class AsyncPlayerChatListener implements Listener {
 					playerName, message, originalMessage, lang);
 			processModule(server, player, chatPlayer, messagesModule, moduleManager.getFloodModule(), event, playerName,
 					message, originalMessage, lang);
-			processModule(server, player, chatPlayer, messagesModule, moduleManager.getBlacklistModule(), event,
-					playerName, message, originalMessage, lang);
+			if (!chatPlayerManager.isPausedBlacklist) {
+				processModule(server, player, chatPlayer, messagesModule, moduleManager.getBlacklistModule(), event,
+						playerName, message, originalMessage, lang);
+			}
 			processModule(server, player, chatPlayer, messagesModule, moduleManager.getSyntaxModule(), event,
 					playerName, message, originalMessage, lang);
 

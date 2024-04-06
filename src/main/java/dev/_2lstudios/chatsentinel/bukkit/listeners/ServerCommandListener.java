@@ -115,9 +115,6 @@ public class ServerCommandListener implements Listener {
 	@EventHandler(priority = EventPriority.LOW, ignoreCancelled = true)
 	public void onServerCommand(PlayerCommandPreprocessEvent event) {
 		Player player = event.getPlayer();
-		if (chatPlayerManager.isPaused) {
-			return;
-		}
 
 		if (!player.hasPermission("chatsentinel.bypass")) {
 			Server server = plugin.getServer();
@@ -159,8 +156,10 @@ public class ServerCommandListener implements Listener {
 					playerName, message, originalMessage, lang, isNormalCommand);
 			processModule(server, player, chatPlayer, messagesModule, moduleManager.getFloodModule(), event, playerName,
 					message, originalMessage, lang, isNormalCommand);
-			processModule(server, player, chatPlayer, messagesModule, moduleManager.getBlacklistModule(), event,
-					playerName, message, originalMessage, lang, isNormalCommand);
+			if (!chatPlayerManager.isPausedBlacklist) {
+				processModule(server, player, chatPlayer, messagesModule, moduleManager.getBlacklistModule(), event,
+						playerName, message, originalMessage, lang, isNormalCommand);
+			}
 			processModule(server, player, chatPlayer, messagesModule, moduleManager.getSyntaxModule(), event,
 					playerName, message, originalMessage, lang, isNormalCommand);
 

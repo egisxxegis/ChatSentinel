@@ -36,7 +36,7 @@ public class ChatSentinelCommand implements CommandExecutor {
 		if (sender.hasPermission("chatsentinel.admin")) {
 			if (args.length == 0 || args[0].equalsIgnoreCase("help")) {
 				sender.sendMessage(messagesModule.getHelp(lang));
-				sender.sendMessage("§e/chatsentinel pause §7- §bToggles pause on ChatSentinel");
+				sender.sendMessage("§e/chatsentinel pause §7- §bToggles pause on ChatSentinel blacklist");
 			} else if (args[0].equalsIgnoreCase("reload")) {
 				moduleManager.reloadData();
 
@@ -56,8 +56,8 @@ public class ChatSentinelCommand implements CommandExecutor {
 					player.sendMessage(emptyLines.toString());
 				}
 			} else if (args[0].equalsIgnoreCase("pause")) {
-				chatPlayerManager.isPaused = !chatPlayerManager.isPaused;
-				String msg = chatPlayerManager.isPaused ? "Pausing chat police" : "Resuming chat police";
+				chatPlayerManager.isPausedBlacklist = !chatPlayerManager.isPausedBlacklist;
+				String msg = chatPlayerManager.isPausedBlacklist ? "Pausing chat police" : "Resuming chat police";
 				sender.sendMessage(msg);
 			} else {
 				sender.sendMessage(messagesModule.getUnknownCommand(lang));
