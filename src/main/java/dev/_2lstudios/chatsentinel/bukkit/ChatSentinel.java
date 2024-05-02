@@ -120,25 +120,26 @@ public class ChatSentinel extends JavaPlugin {
 		MessagesModule messagesModule = moduleManager.getMessagesModule();
 		String playerName = player.getName();
 		String lang = chatPlayer.getLocale();
-		Module[] modulesToProcess = { 
-			moduleManager.getSyntaxModule(), 
-			moduleManager.getCapsModule(),
-			moduleManager.getCooldownModule(), 
-			moduleManager.getFloodModule(), 
-			moduleManager.getBlacklistModule() 
+		Module[] modulesToProcess = {
+				moduleManager.getSyntaxModule(),
+				moduleManager.getCapsModule(),
+				moduleManager.getCooldownModule(),
+				moduleManager.getFloodModule(),
+				moduleManager.getBlacklistModule()
 		};
 
 		for (Module module : modulesToProcess) {
 			// Do not check annormal commands (unless syntax or cooldown)
 			boolean isCommmand = originalMessage.startsWith("/");
-			boolean isNormalCommmand = ChatSentinel.getInstance().getModuleManager().getGeneralModule().isCommand(originalMessage);
+			boolean isNormalCommmand = ChatSentinel.getInstance().getModuleManager().getGeneralModule()
+					.isCommand(originalMessage);
 			if (!(module instanceof SyntaxModule) &&
 					!(module instanceof CooldownModule) &&
 					isCommmand &&
 					!isNormalCommmand) {
 				continue;
 			}
-			
+
 			// Get the modified message
 			String message = finalResult.getMessage();
 
@@ -156,7 +157,8 @@ public class ChatSentinel extends JavaPlugin {
 				chatPlayer.addWarn(module);
 
 				// Get placeholders
-				String[][] placeholders = ChatSentinel.getInstance().getPlaceholders(player, chatPlayer, module, message);
+				String[][] placeholders = ChatSentinel.getInstance().getPlaceholders(player, chatPlayer, module,
+						message);
 
 				// Send warning
 				ChatSentinel.getInstance().sendWarning(placeholders, module, player, lang);
@@ -173,7 +175,8 @@ public class ChatSentinel extends JavaPlugin {
 				finalResult.setMessage(result.getMessage());
 
 				// Update hide
-				if (result.isHide()) finalResult.setHide(true);
+				if (result.isHide())
+					finalResult.setHide(true);
 
 				// Update cancelled
 				if (result.isCancelled()) {

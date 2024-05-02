@@ -135,7 +135,8 @@ public class ChatSentinel extends Plugin {
 		for (Module module : modulesToProcess) {
 			// Do not check annormal commands (unless syntax or cooldown)
 			boolean isCommmand = originalMessage.startsWith("/");
-			boolean isNormalCommmand = ChatSentinel.getInstance().getModuleManager().getGeneralModule().isCommand(originalMessage);
+			boolean isNormalCommmand = ChatSentinel.getInstance().getModuleManager().getGeneralModule()
+					.isCommand(originalMessage);
 			if (!(module instanceof SyntaxModule) &&
 					!(module instanceof CooldownModule) &&
 					isCommmand &&
@@ -154,25 +155,26 @@ public class ChatSentinel extends Plugin {
 			// Process
 			ChatEventResult result = module.processEvent(chatPlayer, messagesModule, playerName, message, lang);
 
-			// Add warning
-			chatPlayer.addWarn(module);
-
-			// Get placeholders
-			String[][] placeholders = ChatSentinel.getInstance().getPlaceholders(player, chatPlayer, module, message);
-
-			// Send warning
-			ChatSentinel.getInstance().sendWarning(placeholders, module, player, lang);
-
-			// Send punishment comamnds
-			if (module.hasExceededWarns(chatPlayer)) {
-				ChatSentinel.getInstance().dispatchCommmands(module, chatPlayer, placeholders);
-			}
-
-			// Send admin notification
-			ChatSentinel.getInstance().dispatchNotification(module, placeholders);
-
 			// Skip result
 			if (result != null) {
+				// Add warning
+				chatPlayer.addWarn(module);
+
+				// Get placeholders
+				String[][] placeholders = ChatSentinel.getInstance().getPlaceholders(player, chatPlayer, module,
+						message);
+
+				// Send warning
+				ChatSentinel.getInstance().sendWarning(placeholders, module, player, lang);
+
+				// Send punishment comamnds
+				if (module.hasExceededWarns(chatPlayer)) {
+					ChatSentinel.getInstance().dispatchCommmands(module, chatPlayer, placeholders);
+				}
+
+				// Send admin notification
+				ChatSentinel.getInstance().dispatchNotification(module, placeholders);
+
 				// Update message
 				finalResult.setMessage(result.getMessage());
 
