@@ -51,10 +51,7 @@ public class AsyncPlayerChatListener implements Listener {
 					recipients.removeIf(player1 -> player1 != player);
 				} else if (blacklistModule.isHideWords()) {
 					event.setMessage(blacklistModule.getPattern().matcher(event.getMessage()).replaceAll("***"));
-				} else if (!blacklistModule.isBlockRawMessage()) {
-					;
-				}
-				else {
+				} else if (blacklistModule.isBlockRawMessage()) {
 					event.setCancelled(true);
 				}
 			} else if (module instanceof CapsModule) {
