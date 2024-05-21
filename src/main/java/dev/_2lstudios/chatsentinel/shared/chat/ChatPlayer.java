@@ -6,7 +6,7 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.UUID;
 
-import dev._2lstudios.chatsentinel.shared.interfaces.Module;
+import dev._2lstudios.chatsentinel.shared.modules.Module;
 
 public class ChatPlayer {
     private int historySize = 3;
@@ -15,6 +15,7 @@ public class ChatPlayer {
     private Deque<String> lastMessages;
     private String locale = null;
     private long lastMessageTime;
+    private boolean notify = false;
 
     public ChatPlayer(UUID uuid) {
         this.uuid = uuid;
@@ -108,5 +109,13 @@ public class ChatPlayer {
 
     public boolean hasLocale() {
         return this.locale != null;
+    }
+
+    public void setNotify(boolean notify) {
+        this.notify = notify;
+    }
+
+    public boolean isNotify() {
+        return notify;
     }
 }
